@@ -5,7 +5,7 @@
    ========================================================================== */
 
 const API_BASE_URL = 'http://localhost:3000/api'; // Replace when backend is ready
-const USE_MOCK = true; // Set to false when connecting to the real backend
+const USE_MOCK = false; // Set to false when connecting to the real backend
 
 /* ==========================================================================
    GRADE SCALE MAPPING (4.0 scale)
