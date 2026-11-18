@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard — School Management</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="dashboard-header">
+    <h2>Student Dashboard</h2>
+    <div>
+      <span id="student-name" style="margin-right: 16px; color: var(--color-text-muted); font-size: 0.875rem;"></span>
+      <button class="btn btn--outline btn--sm" id="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <div class="card card--dashboard">
+    <h3 style="margin-bottom: var(--space-lg);">My Information</h3>
+
+    <div id="student-info">
+      <p style="text-align:center; padding:24px; color:var(--color-text-muted)">Loading…</p>
+    </div>
+  </div>
+
+  <div class="card card--dashboard" style="margin-top: var(--space-lg);">
+    <h3 style="margin-bottom: var(--space-lg);">My Courses</h3>
+    <div id="student-courses">
+      <p style="text-align:center; padding:24px; color:var(--color-text-muted)">Loading…</p>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/guard.js"></script>
+  <script>
+    // Set username in header
+    const session = getSession();
+    document.getElementById('student-name').textContent = session.username || 'Student';
+
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', logout);
+
+    // Load own info
+    (async function () {
+      const res = await getOwnInfo();
+      const infoEl = document.getElementById('student-info');
+      const coursesEl = document.getElementById('student-courses');
+
+      if (res.ok) {
+        const d = res.data;
+        infoEl.innerHTML = `
+          <div class="info-row">
+            <span class="label">Full Name</span>
+            <span class="value">${d.fullName}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Username</span>
+            <span class="value">${d.username}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Role</span>
+            <span class="value">${d.role}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Average Marks</span>
+            <span class="value">${d.marks}</span>
+          </div>
+          <div class="info-row" style="border-bottom:none;">
+            <span class="label">Grade</span>
+            <span class="value">${d.grade}</span>
+          </div>
+        `;
+
+        if (d.courses && d.courses.length) {
+          coursesEl.innerHTML = '<ul style="list-style: disc; padding-left: 20px;">' +
+            d.courses.map(c => `<li style="padding:4px 0;color:var(--color-text-muted);font-size:0.875rem;">${c}</li>`).join('') +
+            '</ul>';
+        } else {
+          coursesEl.innerHTML = '<p style="color:var(--color-text-muted);font-size:0.875rem;">No courses enrolled.</p>';
+        }
+      } else {
+        infoEl.innerHTML = '<p style="color:var(--color-error);">Failed to load information.</p>';
+        coursesEl.innerHTML = '';
+      }
+    })();
+  </script>
+</body>
+</html>

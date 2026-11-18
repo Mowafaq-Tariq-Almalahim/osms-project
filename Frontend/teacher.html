@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Dashboard — School Management</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="dashboard-header">
+    <h2>Teacher Dashboard</h2>
+    <div>
+      <span id="teacher-name" style="margin-right: 16px; color: var(--color-text-muted); font-size: 0.875rem;"></span>
+      <button class="btn btn--outline btn--sm" id="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <div class="card card--dashboard">
+    <div class="section-header">
+      <h3>Students &amp; Marks</h3>
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Marks</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="students-tbody">
+          <tr><td colspan="4" style="text-align:center; padding:24px;">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/guard.js"></script>
+  <script>
+    // Set username in header
+    const session = getSession();
+    document.getElementById('teacher-name').textContent = session.username || 'Teacher';
+
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', logout);
+
+    // Load students
+    (async function () {
+      const res = await getStudents();
+      const tbody = document.getElementById('students-tbody');
+      if (res.ok && res.data.length) {
+        tbody.innerHTML = res.data.map(s => `
+          <tr>
+            <td>${s.id}</td>
+            <td>${s.name}</td>
+            <td>${s.marks}</td>
+            <td>
+              <button class="btn btn--outline btn--sm" onclick="alert('Edit marks for ${s.name}')">Edit Marks</button>
+              <button class="btn btn--primary btn--sm" onclick="alert('Add marks for ${s.name}')" style="margin-left:4px;">Add Marks</button>
+            </td>
+          </tr>
+        `).join('');
+      } else {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--color-text-muted)">No students found.</td></tr>';
+      }
+    })();
+  </script>
+</body>
+</html>
