@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tuition &amp; Payments — OSMS</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <!-- Header / Nav -->
+  <header class="dashboard-header">
+    <div class="dashboard-brand">
+      <h2>OSMS <span style="font-weight: 300; color: var(--color-text-muted); font-size: 1rem;">| Student Portal</span></h2>
+    </div>
+    <nav class="dashboard-nav" aria-label="Student Navigation">
+      <a href="student.html" class="nav-link">Dashboard</a>
+      <a href="student-transcript.html" class="nav-link">Transcript</a>
+      <a href="student-enrollment.html" class="nav-link">Course Enrollment</a>
+      <a href="student-payments.html" class="nav-link active">Payments</a>
+    </nav>
+    <div class="dashboard-user">
+      <div class="user-info">
+        <div class="user-name" id="student-header-name">Student</div>
+        <div class="user-role">Student</div>
+      </div>
+      <button class="btn btn--outline btn--sm" id="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <main class="page-container">
+    <div class="section-header">
+      <div>
+        <h2>Tuition &amp; Student Financials</h2>
+        <p class="form-hint">
+          Calculate semester tuition costs based on credit hour pricing rules and submit online payments.
+        </p>
+      </div>
+    </div>
+
+    <!-- Feedback banner -->
+    <div id="payments-alert" class="alert" role="alert"></div>
+
+    <div id="student-payments-content">
+      <div class="table-empty">
+        <p>Loading financial records…</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/guard.js"></script>
+  <script src="js/student.js"></script>
+</body>
+</html>

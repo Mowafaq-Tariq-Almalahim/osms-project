@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Institutional Reports — OSMS</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header class="dashboard-header">
+    <div class="dashboard-brand">
+      <h2>OSMS <span style="font-weight: 300; color: var(--color-text-muted); font-size: 1rem;">| Administration</span></h2>
+    </div>
+    <nav class="dashboard-nav" aria-label="Admin Navigation">
+      <a href="admin.html" class="nav-link">Management Portal</a>
+      <a href="admin-reports.html" class="nav-link active">Analytical Reports</a>
+    </nav>
+    <div class="dashboard-user">
+      <div class="user-info">
+        <div class="user-name" id="admin-header-name">Admin</div>
+        <div class="user-role">System Administrator</div>
+      </div>
+      <button class="btn btn--outline btn--sm" id="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <main class="page-container">
+
+    <div class="section-header">
+      <div>
+        <h2>Institutional Database Reports</h2>
+        <p class="form-hint">
+          Analytical reporting engine powered by the four core PostgreSQL views.
+        </p>
+      </div>
+    </div>
+
+    <!-- Reports Tabs -->
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="rep-transcript" role="tab">1. Student Transcript</button>
+      <button class="tab-btn" data-tab="rep-dept" role="tab">2. Department Enrollment Stats</button>
+      <button class="tab-btn" data-tab="rep-load" role="tab">3. Instructor Teaching Load</button>
+      <button class="tab-btn" data-tab="rep-unpaid" role="tab">4. Unpaid Tuition</button>
+    </div>
+
+    <!-- ====================================================================
+         REPORT 1: view_student_transcript
+         ==================================================================== -->
+    <section id="rep-transcript" class="tab-pane active" role="tabpanel">
+      <div class="card">
+        <div class="section-header">
+          <div>
+            <h3>Report: Student Transcript (view_student_transcript)</h3>
+            <p class="form-hint">Inspect complete course history, grade points, and semester performance for any student.</p>
+          </div>
+        </div>
+
+        <div class="form-group" style="max-width: 480px; margin-bottom: var(--space-lg);">
+          <label for="report-student-select">Select Student</label>
+          <select id="report-student-select" class="select">
+            <option value="" disabled selected>Loading students list…</option>
+          </select>
+        </div>
+
+        <div id="report-transcript-output">
+          <div class="table-empty">
+            <p>Select a student from the dropdown above to display their official transcript report.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         REPORT 2: view_department_enrollment_stats
+         ==================================================================== -->
+    <section id="rep-dept" class="tab-pane" role="tabpanel">
+      <div class="card">
+        <div class="section-header">
+          <div>
+            <h3>Report: Department Enrollment Stats (view_department_enrollment_stats)</h3>
+            <p class="form-hint">Course breakdown showing active enrollments, completions, and total student counts by department.</p>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Department</th>
+                <th>Course Code</th>
+                <th>Course Name</th>
+                <th>Credits</th>
+                <th>Active Enrolled</th>
+                <th>Completed</th>
+                <th>Total Enrolled</th>
+              </tr>
+            </thead>
+            <tbody id="report-dept-tbody">
+              <tr><td colspan="7" class="table-empty">Loading department enrollment statistics…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         REPORT 3: view_instructor_teaching_load
+         ==================================================================== -->
+    <section id="rep-load" class="tab-pane" role="tabpanel">
+      <div class="card">
+        <div class="section-header">
+          <div>
+            <h3>Report: Instructor Teaching Load (view_instructor_teaching_load)</h3>
+            <p class="form-hint">Sections taught and aggregate student enrollment counts per instructor per semester.</p>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Instructor Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Semester</th>
+                <th>Sections Taught</th>
+                <th>Total Students Taught</th>
+              </tr>
+            </thead>
+            <tbody id="report-load-tbody">
+              <tr><td colspan="6" class="table-empty">Loading instructor teaching load statistics…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         REPORT 4: view_unpaid_tuition
+         ==================================================================== -->
+    <section id="rep-unpaid" class="tab-pane" role="tabpanel">
+      <div class="card">
+        <div class="section-header">
+          <div>
+            <h3>Report: Unpaid Tuition (view_unpaid_tuition)</h3>
+            <p class="form-hint">List of all students with non-'paid' payment records who are currently blocked from registration.</p>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Student Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Semester</th>
+                <th>Tuition Due</th>
+                <th>Payment Status</th>
+              </tr>
+            </thead>
+            <tbody id="report-unpaid-tbody">
+              <tr><td colspan="6" class="table-empty">Loading unpaid tuition records…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/guard.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

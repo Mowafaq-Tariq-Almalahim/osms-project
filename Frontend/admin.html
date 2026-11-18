@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Management Portal — OSMS</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header class="dashboard-header">
+    <div class="dashboard-brand">
+      <h2>OSMS <span style="font-weight: 300; color: var(--color-text-muted); font-size: 1rem;">| Administration</span></h2>
+    </div>
+    <nav class="dashboard-nav" aria-label="Admin Navigation">
+      <a href="admin.html" class="nav-link active">Management Portal</a>
+      <a href="admin-reports.html" class="nav-link">Analytical Reports</a>
+    </nav>
+    <div class="dashboard-user">
+      <div class="user-info">
+        <div class="user-name" id="admin-header-name">Admin</div>
+        <div class="user-role">System Administrator</div>
+      </div>
+      <button class="btn btn--outline btn--sm" id="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <main class="page-container">
+
+    <!-- Management Navigation Tabs -->
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="tab-users" role="tab">Users (Students / Faculty / Admins)</button>
+      <button class="tab-btn" data-tab="tab-courses" role="tab">Courses &amp; Prerequisites</button>
+      <button class="tab-btn" data-tab="tab-classes" role="tab">Class Instances</button>
+      <button class="tab-btn" data-tab="tab-structure" role="tab">Departments &amp; Semesters</button>
+      <button class="tab-btn" data-tab="tab-finance" role="tab">Pricing Rules &amp; Payments</button>
+    </div>
+
+    <!-- ====================================================================
+         TAB 1: USERS
+         ==================================================================== -->
+    <section id="tab-users" class="tab-pane active" role="tabpanel">
+
+      <!-- Students Table -->
+      <div class="card" style="margin-bottom: var(--space-xl);">
+        <div class="section-header">
+          <div>
+            <h3>Manage Students</h3>
+            <p class="form-hint">View, register, edit or delete enrolled student records.</p>
+          </div>
+          <button id="add-student-btn" class="btn btn--primary btn--sm">+ Add Student</button>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Major Department</th>
+                <th>Overall GPA</th>
+                <th>Status</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="table-students-tbody">
+              <tr><td colspan="7" class="table-empty">Loading students…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Instructors Table -->
+      <div class="card" style="margin-bottom: var(--space-xl);">
+        <div class="section-header">
+          <div>
+            <h3>Manage Instructors</h3>
+            <p class="form-hint">Instructors can only be created and managed by administrators.</p>
+          </div>
+          <button id="add-instructor-btn" class="btn btn--primary btn--sm">+ Add Instructor</button>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="table-instructors-tbody">
+              <tr><td colspan="5" class="table-empty">Loading instructors…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Admins Table -->
+      <div class="card">
+        <div class="section-header">
+          <div>
+            <h3>Manage Administrators</h3>
+            <p class="form-hint">System administrators with full institutional database access.</p>
+          </div>
+          <button id="add-admin-btn" class="btn btn--primary btn--sm">+ Add Administrator</button>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="table-admins-tbody">
+              <tr><td colspan="4" class="table-empty">Loading administrators…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ====================================================================
+         TAB 2: COURSES & PREREQUISITES
+         ==================================================================== -->
+    <section id="tab-courses" class="tab-pane" role="tabpanel">
+
+      <!-- Courses Table -->
+      <div class="card" style="margin-bottom: var(--space-xl);">
+        <div class="section-header">
+          <div>
+            <h3>Courses Catalog</h3>
+            <p class="form-hint">Includes credit-hour weights and Case 2 minimum credit gates.</p>
+          </div>
+          <button id="add-course-btn" class="btn btn--primary btn--sm">+ Add Course</button>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Course Name</th>
+                <th>Credits</th>
+                <th>Department</th>
+                <th>Min Completed Cr (Gate)</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="table-courses-tbody">
+              <tr><td colspan="6" class="table-empty">Loading courses…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Course Prerequisites Manager -->
+      <div class="card">
+        <div class="section-header">
+          <div>
+            <h3>Course Prerequisites (Case 1)</h3>
+            <p class="form-hint">Enforces prerequisite courses. A course is blocked from requiring itself.</p>
+          </div>
+        </div>
+
+        <div id="prereq-alert" class="alert" role="alert"></div>
+
+        <!-- Add Prereq Pair Form -->
+        <div style="background: #FAF8F5; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-lg);">
+          <h4 style="font-size: var(--font-size-sm); margin-bottom: var(--space-sm);">Add Prerequisite Relationship</h4>
+          <div class="form-row" style="align-items: flex-end;">
+            <div class="form-group" style="flex: 2;">
+              <label for="prereq-course-select">Target Course (Requires Prerequisite)</label>
+              <select id="prereq-course-select" class="select"></select>
+            </div>
+            <div class="form-group" style="flex: 2;">
+              <label for="prereq-target-select">Prerequisite Course (Must Be Completed First)</label>
+              <select id="prereq-target-select" class="select"></select>
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <button id="add-prereq-pair-btn" class="btn btn--primary btn--full">+ Add Prerequisite</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Target Course</th>
+                <th>Relationship</th>
+                <th>Prerequisite Required</th>
+                <th style="text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="table-prereqs-tbody">
+              <tr><td colspan="4" class="table-empty">Loading prerequisites…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ====================================================================
+         TAB 3: CLASS INSTANCES
+         ==================================================================== -->
+    <section id="tab-classes" class="tab-pane" role="tabpanel">
+      <div class="card">
+        <div class="section-header">
+          <div>
+            <h3>Class Instances (Course Sections)</h3>
+            <p class="form-hint">Scheduled course sections with instructor assignments and capacity limits.</p>
+          </div>
+          <button id="add-instance-btn" class="btn btn--primary btn--sm">+ Schedule Section</button>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Section ID</th>
+                <th>Course</th>
+                <th>Instructor</th>
+                <th>Semester</th>
+                <th>Enrolled / Capacity</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="table-instances-tbody">
+              <tr><td colspan="6" class="table-empty">Loading class instances…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         TAB 4: ACADEMIC STRUCTURE
+         ==================================================================== -->
+    <section id="tab-structure" class="tab-pane" role="tabpanel">
+
+      <!-- Departments -->
+      <div class="card" style="margin-bottom: var(--space-xl);">
+        <div class="section-header">
+          <div>
+            <h3>Academic Departments</h3>
+            <p class="form-hint">College departments offering academic degree tracks.</p>
+          </div>
+          <button id="add-department-btn" class="btn btn--primary btn--sm">+ Add Department</button>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Department Name</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="table-departments-tbody">
+              <tr><td colspan="3" class="table-empty">Loading departments…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Semesters -->
+      <div class="card">
+        <div class="section-header">
+          <div>
+            <h3>Academic Semesters</h3>
+            <p class="form-hint">Term schedules defining registration and grading periods.</p>
+          </div>
+          <button id="add-semester-btn" class="btn btn--primary btn--sm">+ Add Semester</button>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Semester Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="table-semesters-tbody">
+              <tr><td colspan="5" class="table-empty">Loading semesters…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ====================================================================
+         TAB 5: FINANCE & PAYMENTS
+         ==================================================================== -->
+    <section id="tab-finance" class="tab-pane" role="tabpanel">
+
+      <!-- Pricing Rules -->
+      <div class="card" style="margin-bottom: var(--space-xl);">
+        <div class="section-header">
+          <div>
+            <h3>Tuition Pricing Rules</h3>
+            <p class="form-hint">Rate charged per credit-hour weight used by calculate_tuition().</p>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Rule ID</th>
+                <th>Credit-Hour Weight</th>
+                <th>Price Per Hour</th>
+                <th style="text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="table-pricing-tbody">
+              <tr><td colspan="4" class="table-empty">Loading pricing rules…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Payments Table -->
+      <div class="card">
+        <div class="section-header">
+          <div>
+            <h3>Student Payments Ledger</h3>
+            <p class="form-hint">Payment verification records required before course enrollment.</p>
+          </div>
+          <button id="add-payment-btn" class="btn btn--primary btn--sm">+ Record Payment</button>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Student</th>
+                <th>Semester</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Paid At</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="table-payments-tbody">
+              <tr><td colspan="7" class="table-empty">Loading payments…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/guard.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

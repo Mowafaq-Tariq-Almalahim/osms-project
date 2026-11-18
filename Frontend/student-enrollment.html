@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Enrollment — OSMS</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <!-- Header / Nav -->
+  <header class="dashboard-header">
+    <div class="dashboard-brand">
+      <h2>OSMS <span style="font-weight: 300; color: var(--color-text-muted); font-size: 1rem;">| Student Portal</span></h2>
+    </div>
+    <nav class="dashboard-nav" aria-label="Student Navigation">
+      <a href="student.html" class="nav-link">Dashboard</a>
+      <a href="student-transcript.html" class="nav-link">Transcript</a>
+      <a href="student-enrollment.html" class="nav-link active">Course Enrollment</a>
+      <a href="student-payments.html" class="nav-link">Payments</a>
+    </nav>
+    <div class="dashboard-user">
+      <div class="user-info">
+        <div class="user-name" id="student-header-name">Student</div>
+        <div class="user-role">Student</div>
+      </div>
+      <button class="btn btn--outline btn--sm" id="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <main class="page-container">
+    <div class="section-header">
+      <div>
+        <h2>Course Registration &amp; Enrollment</h2>
+        <p class="form-hint">
+          Browse open class instances, verify prerequisites and credit requirements, and enroll or drop courses.
+        </p>
+      </div>
+
+      <div style="min-width: 200px;">
+        <label for="enrollment-semester-select" style="font-size: var(--font-size-xs); font-weight: 600; display: block; margin-bottom: 4px;">
+          Select Semester
+        </label>
+        <select id="enrollment-semester-select" class="select" style="padding: 8px 12px; font-size: var(--font-size-sm);">
+          <option value="2" selected>Spring 2026 (Active)</option>
+          <option value="1">Fall 2025</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Alert for procedure feedback (SUCCESS: / ERROR:) -->
+    <div id="enrollment-feedback-alert" class="alert" role="alert" style="margin-top: var(--space-md);"></div>
+
+    <div id="student-enrollment-content" style="margin-top: var(--space-md);">
+      <div class="table-empty">
+        <p>Loading course offerings…</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/guard.js"></script>
+  <script src="js/student.js"></script>
+</body>
+</html>
